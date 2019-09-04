@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_workshop_animation/model/place_model.dart';
 import 'package:flutter_workshop_animation/place_detail/place_detail_info.dart';
-import 'package:flutter_workshop_animation/place_detail/place_info_animation.dart';
 
 class PlaceDetailAnimator extends StatefulWidget {
   final PlaceModel placeModel;
@@ -33,7 +32,6 @@ class _PlaceDetailAnimatorState extends State<PlaceDetailAnimator>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
   }

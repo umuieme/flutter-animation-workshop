@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_workshop_animation/model/place_model.dart';
-import 'package:flutter_workshop_animation/place_detail/place_detail_enter_animation.dart';
 import 'package:flutter_workshop_animation/place_detail/place_info_animation.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PlaceDetailInfo extends StatefulWidget {
   final PlaceModel placeModel;
@@ -19,7 +20,6 @@ class _PlaceDetailInfoState extends State<PlaceDetailInfo> {
   _PlaceDetailInfoState();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -56,7 +56,8 @@ class _PlaceDetailInfoState extends State<PlaceDetailInfo> {
       child: Align(
           alignment: Alignment.topRight,
           child: FloatingActionButton(
-            child: Icon(Icons.location_on),
+            backgroundColor: Colors.white,
+            child: Icon(FontAwesomeIcons.locationArrow, color: Colors.lightBlue.withOpacity(0.5),),
             onPressed: () {},
           )),
       builder: (BuildContext context, Widget child) {
@@ -121,8 +122,9 @@ class _PlaceDetailInfoState extends State<PlaceDetailInfo> {
             Row(
               children: <Widget>[
                 Icon(
-                  Icons.access_time,
+                  FontAwesomeIcons.clock,
                   color: Colors.white,
+                  size: 16,
                 ),
                 SizedBox(width: 10),
                 Text(
@@ -141,7 +143,7 @@ class _PlaceDetailInfoState extends State<PlaceDetailInfo> {
             ),
             Row(
               children: <Widget>[
-                Icon(Icons.flag, color: Colors.white),
+                Icon(FontAwesomeIcons.flag, size: 16, color: Colors.white),
                 SizedBox(width: 10),
                 Text(widget.placeModel.distance.toUpperCase(),
                     style: TextStyle(color: Colors.white, shadows: [
@@ -228,28 +230,28 @@ class _PlaceDetailInfoState extends State<PlaceDetailInfo> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Icon(Icons.comment),
+                Icon(FontAwesomeIcons.comment, size: 16,),
                 SizedBox(width: 8),
                 Text(widget.placeModel.commentCount.toString()),
               ],
             ),
             Row(
               children: <Widget>[
-                Icon(Icons.thumb_up),
+                Icon(FontAwesomeIcons.heart, size: 16,),
                 SizedBox(width: 8),
                 Text(widget.placeModel.likes.toString()),
               ],
             ),
             Row(
               children: <Widget>[
-                Icon(Icons.star),
+                Icon(FontAwesomeIcons.star, size: 16,),
                 SizedBox(width: 8),
                 Text(widget.placeModel.starCount.toString()),
               ],
             ),
             Row(
               children: <Widget>[
-                Icon(Icons.share),
+                Icon(FontAwesomeIcons.share, size: 16,),
                 SizedBox(width: 8),
                 Text(widget.placeModel.shareCount.toString()),
               ],
@@ -315,8 +317,8 @@ class _PlaceDetailInfoState extends State<PlaceDetailInfo> {
           color: Colors.grey,
           height: 48,
           width: 48,
-          child: Image.network(
-            imageUrl,
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
           ),
         ),
       ),
@@ -350,6 +352,7 @@ class _PlaceDetailInfoState extends State<PlaceDetailInfo> {
                     CircleAvatar(
                       child: Icon(
                         Icons.location_on,
+                        color: Colors.blue.withOpacity(0.4),
                       ),
                       backgroundColor: Colors.green.withOpacity(0.2),
                     ),

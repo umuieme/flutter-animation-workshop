@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_workshop_animation/location_model.dart';
+import 'package:flutter_workshop_animation/model/place_model.dart';
+import 'package:flutter_workshop_animation/place_detail/place_detail_screen.dart';
 
 class LocationCard extends StatelessWidget {
-  final Location location;
+  final PlaceModel location;
 
   LocationCard(this.location);
 
@@ -13,24 +15,21 @@ class LocationCard extends StatelessWidget {
       onTap: () {
         //todo go to detail page
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return Hero(
-            tag: location.imageUrl,
-            child: Image.network(
-              location.imageUrl,
-              fit: BoxFit.cover,
-            ),
-          );
+          return PlaceDetailScreen(placeModel: location,);
         }));
       },
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          ClipRRect(
-              borderRadius: BorderRadius.circular(32.0),
-              child: Image.network(
-                location.imageUrl,
-                fit: BoxFit.cover,
-              )),
+          Hero(
+            tag: location.mainImage,
+                      child: ClipRRect(
+                borderRadius: BorderRadius.circular(32.0),
+                child: CachedNetworkImage(
+                  imageUrl: location.mainImage,
+                  fit: BoxFit.cover,
+                )),
+          ),
           Positioned(
             top: 0.0,
             right: 0.0,
