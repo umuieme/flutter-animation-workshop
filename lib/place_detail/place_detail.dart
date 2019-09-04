@@ -1,10 +1,11 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_workshop_animation/model/place_model.dart';
 import 'package:flutter_workshop_animation/place_detail/place_detail_animator.dart';
 import 'package:flutter_workshop_animation/place_detail/place_detail_enter_animation.dart';
-import 'package:flutter_workshop_animation/place_detail/place_detail_info.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PlaceDetail extends StatefulWidget {
   final PlaceModel placeModel;
@@ -28,10 +29,10 @@ class _PlaceDetailState extends State<PlaceDetail> {
       fit: StackFit.expand,
       children: <Widget>[
         _buildBackgroundImage(),
+        _buildBody(),
         isDetailInfoShowing
             ? PlaceDetailAnimator(placeModel: widget.placeModel)
             : SizedBox(),
-        _buildBody(),
       ],
     );
   }
@@ -47,28 +48,36 @@ class _PlaceDetailState extends State<PlaceDetail> {
       backgroundColor: Colors.transparent,
       body: isDetailInfoShowing
           ? SizedBox()
-          : AnimatedBuilder(
-              animation: widget.controller,
-              builder: (BuildContext context, Widget child) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 100,
-                    ),
-                    _buildName(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _buildTimeAandDistance(),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    _buildDescription(),
-                    _buildImageList(),
-                  ],
-                );
-              },
+          : SingleChildScrollView(
+              child: AnimatedBuilder(
+                animation: widget.controller,
+                builder: (BuildContext context, Widget child) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 50,
+                      ),
+                      _buildName(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _buildTimeAandDistance(),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      _buildDescription(),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      _buildImageList(),
+                      SizedBox(
+                        height: 20,
+                      )
+                    ],
+                  );
+                },
+              ),
             ),
     );
   }
@@ -87,8 +96,8 @@ class _PlaceDetailState extends State<PlaceDetail> {
                 padding: const EdgeInsets.only(left: 24.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(25)),
-                  child: Image.asset(
-                    image,
+                  child: CachedNetworkImage(
+                    imageUrl: image,
                     height: 180,
                     width: 120,
                     fit: BoxFit.cover,
@@ -103,27 +112,25 @@ class _PlaceDetailState extends State<PlaceDetail> {
   }
 
   Widget _buildDescription() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Opacity(
-          opacity: widget.animation.descriptionOpacityAnimation.value,
-          child: Transform.translate(
-            offset: Offset(
-                widget.animation.descriptionTranslationAnimation.value, 0),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  isDetailInfoShowing = true;
-                });
-              },
-              child: Text(
-                widget.placeModel.description,
-                style: TextStyle(color: Colors.white, shadows: [
-                  Shadow(
-                      color: Colors.black, offset: Offset(2, 2), blurRadius: 10)
-                ]),
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      child: Opacity(
+        opacity: widget.animation.descriptionOpacityAnimation.value,
+        child: Transform.translate(
+          offset:
+              Offset(widget.animation.descriptionTranslationAnimation.value, 0),
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                isDetailInfoShowing = true;
+              });
+            },
+            child: Text(
+              widget.placeModel.description,
+              style: TextStyle(color: Colors.white, shadows: [
+                Shadow(
+                    color: Colors.black, offset: Offset(2, 2), blurRadius: 10)
+              ]),
             ),
           ),
         ),
@@ -134,7 +141,7 @@ class _PlaceDetailState extends State<PlaceDetail> {
   Widget _buildTimeAandDistance() {
     print("_buildTimeAandDistance for place detail");
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Opacity(
         opacity: widget.animation.scheduleOpacityAnimation.value,
         child: Transform.translate(
@@ -143,7 +150,7 @@ class _PlaceDetailState extends State<PlaceDetail> {
           child: Row(
             children: <Widget>[
               Icon(
-                Icons.access_time,
+                FontAwesomeIcons.clock,
                 color: Colors.white,
               ),
               SizedBox(width: 10),
@@ -155,7 +162,7 @@ class _PlaceDetailState extends State<PlaceDetail> {
                 ]),
               ),
               SizedBox(width: 20),
-              Icon(Icons.flag, color: Colors.white),
+              Icon(FontAwesomeIcons.flag, color: Colors.white),
               SizedBox(width: 10),
               Text(widget.placeModel.distance.toUpperCase(),
                   style: TextStyle(color: Colors.white, shadows: [
@@ -173,7 +180,7 @@ class _PlaceDetailState extends State<PlaceDetail> {
 
   Widget _buildName() {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Opacity(
         opacity: widget.animation.nameOpacityAnimation.value,
         child: Transform.translate(
@@ -195,16 +202,19 @@ class _PlaceDetailState extends State<PlaceDetail> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         AnimatedContainer(
-          duration: Duration(seconds: 2),
+          duration: Duration(milliseconds: 800),
           curve: Curves.easeInOut,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height *
               (isDetailInfoShowing ? 0.5 : 1.0),
           foregroundDecoration:
               BoxDecoration(color: Colors.black.withOpacity(0.3)),
-          child: Image.asset(
-            widget.placeModel.mainImage,
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: widget.placeModel.mainImage,
+            child: CachedNetworkImage(
+              imageUrl: widget.placeModel.mainImage,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ],

@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_workshop_animation/location_card.dart';
-import 'package:flutter_workshop_animation/location_model.dart';
+import 'package:flutter_workshop_animation/home/location_card.dart';
+import 'package:flutter_workshop_animation/model/place_model.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -13,23 +13,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final PageController _pageController = PageController(viewportFraction: 0.7);
   ValueNotifier<double> selectedIndex = ValueNotifier<double>(0.0);
-
-  List<Location> location = [
-    Location(
-        name: "Maldives",
-        imageUrl: "https://i.ytimg.com/vi/9K-k8OV8I7Q/maxresdefault.jpg"),
-    Location(
-        name: "Nepal",
-        imageUrl:
-            "https://www.himalayanexploration.com/wp-content/uploads/2017/08/Bouddhanath-a-largest-stupa.jpg"),
-    Location(
-        name: "Thailand",
-        imageUrl:
-            "http://www.holidaytours.one/wp-content/uploads/2014/07/Thailand-tour.jpg"),
-    Location(
-        name: "Test",
-        imageUrl: "https://i.ytimg.com/vi/9K-k8OV8I7Q/maxresdefault.jpg"),
-  ];
+  List<PlaceModel> placeList = PlaceModel.getDummyPlace();
 
   List<String> countryList = ["Dubai", "China", "Korea", "Nepal", "Japan"];
 
@@ -184,34 +168,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Iterable<Widget> _buildPages() {
     final List<Widget> pages = <Widget>[];
-    double pictureHeight = MediaQuery.of(context).size.height * 0.6;
-    double pictureWidth = MediaQuery.of(context).size.width * 0.6;
-
-    for (int index = 0; index < location.length; index++) {
-      var alignment = Alignment.center
-          .add(Alignment((selectedIndex.value - index) * 0.5, 0.0));
+    for (int index = 0; index < placeList.length; index++) {
       var resizeFactor =
-          (1 - (((selectedIndex.value - index).abs() * 0.26).clamp(0.0, 1.0)));
+          (1 - (((selectedIndex.value - index).abs() * 0.2).clamp(0.0, 1.0)));
       var opacity = 1 - min((selectedIndex.value - index).abs(), 1) * .6;
-
-      pages.add(_buildPageItem(opacity, alignment, pictureWidth, resizeFactor,
-          pictureHeight, location[index]));
+      pages.add(_buildPageItem(opacity, resizeFactor, placeList[index]));
     }
     return pages;
   }
 
-  Widget _buildPageItem(
-      num opacity,
-      AlignmentGeometry alignment,
-      double pictureWidth,
-      num resizeFactor,
-      double pictureHeight,
-      Location location) {
+  Widget _buildPageItem(num opacity, num resizeFactor,PlaceModel location) {
     return Opacity(
       opacity: opacity,
-      child: Container(
-        alignment: alignment,
-        child: Container(
+      child: FractionallySizedBox(
+        heightFactor: resizeFactor,
+              child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
           decoration: BoxDecoration(
             //color: Colors.red[400],
             borderRadius: BorderRadius.circular(32.0),
@@ -223,8 +195,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-          width: pictureWidth * resizeFactor,
-          height: pictureHeight * resizeFactor,
           child: LocationCard(location),
         ),
       ),
