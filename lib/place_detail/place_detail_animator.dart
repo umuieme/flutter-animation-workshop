@@ -10,29 +10,19 @@ class PlaceDetailAnimator extends StatefulWidget {
   _PlaceDetailAnimatorState createState() => _PlaceDetailAnimatorState();
 }
 
-class _PlaceDetailAnimatorState extends State<PlaceDetailAnimator>
-    with TickerProviderStateMixin {
-  AnimationController _controller;
-
+class _PlaceDetailAnimatorState extends State<PlaceDetailAnimator> {
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        duration: Duration(milliseconds: 2000), vsync: this);
-    _controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return PlaceDetailInfo(
-      widget.placeModel,
-      _controller,
-    );
+    return PlaceDetailInfo(widget.placeModel);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
   }
 }

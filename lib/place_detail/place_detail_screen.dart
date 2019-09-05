@@ -13,28 +13,23 @@ class PlaceDetailScreen extends StatefulWidget {
       _PlaceDetailScreenState(this.placeModel);
 }
 
-class _PlaceDetailScreenState extends State<PlaceDetailScreen> with SingleTickerProviderStateMixin {
+class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
   PlaceModel placeModel;
-
-  AnimationController _controller;
 
   _PlaceDetailScreenState(this.placeModel);
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
-    _controller = AnimationController(duration: Duration(milliseconds: 1000), vsync: this);
-    _controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return PlaceDetail(placeModel: placeModel, controller: _controller,);
+    return PlaceDetail(placeModel: placeModel);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
   }
 }

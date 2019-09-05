@@ -23,15 +23,12 @@ class LocationCard extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Hero(
-            tag: location.mainImage,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(32.0),
-                child: CachedNetworkImage(
-                  imageUrl: location.mainImage,
-                  fit: BoxFit.cover,
-                )),
-          ),
+          ClipRRect(
+              borderRadius: BorderRadius.circular(32.0),
+              child: CachedNetworkImage(
+                imageUrl: location.mainImage,
+                fit: BoxFit.cover,
+              )),
           Positioned(
             top: 0.0,
             right: 0.0,
