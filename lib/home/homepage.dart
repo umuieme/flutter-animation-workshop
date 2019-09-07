@@ -168,26 +168,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Iterable<Widget> _buildPages() {
     final List<Widget> pages = <Widget>[];
+    double value = _pageController.hasClients ? _pageController.page : 0.0;
     for (int index = 0; index < placeList.length; index++) {
-      pages.add(_buildPageItem( placeList[index]));
+      double opacity = 1.0 - min((value - index).abs(), 1) * 0.6;
+      double size = 1.0 - min((value - index).abs(), 1) * 0.2;
+      pages.add(_buildPageItem(placeList[index], opacity, size));
     }
     return pages;
   }
 
-  Widget _buildPageItem(PlaceModel location) {
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(32.0),
-          boxShadow: <BoxShadow>[
-    BoxShadow(
-      color: Color(0xff9ce4fb),
-      offset: Offset(0.0, 6.0),
-      blurRadius: 10.0,
-    ),
-          ],
+  Widget _buildPageItem(PlaceModel location, double opacity, double size) {
+    return Opacity(
+      opacity: opacity,
+      child: FractionallySizedBox(
+        heightFactor: size,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(32.0),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Color(0xff9ce4fb),
+                offset: Offset(0.0, 6.0),
+                blurRadius: 10.0,
+              ),
+            ],
+          ),
+          child: LocationCard(location),
         ),
-        child: LocationCard(location),
-      );
+      ),
+    );
   }
 }

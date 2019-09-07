@@ -8,15 +8,25 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PlaceDetail extends StatefulWidget {
   final PlaceModel placeModel;
-
-  PlaceDetail({@required this.placeModel});
+final AnimationController controller;
+  PlaceDetail({@required this.placeModel, this.controller});
 
   @override
   _PlaceDetailState createState() => _PlaceDetailState();
 }
 
 class _PlaceDetailState extends State<PlaceDetail> {
+
+  Animation<double> nameTranslateANimaiton;
   bool isDetailInfoShowing = false;
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    nameTranslateANimaiton = Tween<double>(begin: 200, end: 0).animate(widget.controller);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -143,33 +153,45 @@ class _PlaceDetailState extends State<PlaceDetail> {
   }
 
   Widget _buildName() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: Text(
-        widget.placeModel.name,
-        style: TextStyle(color: Colors.white, fontSize: 24, shadows: [
-          Shadow(color: Colors.black, offset: Offset(2, 2), blurRadius: 10)
-        ]),
+    return AnimatedBuilder(
+      animation: widget.controller,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Text(
+          widget.placeModel.name,
+          style: TextStyle(color: Colors.white, fontSize: 24, shadows: [
+            Shadow(color: Colors.black, offset: Offset(2, 2), blurRadius: 10)
+          ]),
+        ),
       ),
+      builder: (context, child){
+        return Transform.translate(
+        offset: Offset(nameTranslateANimaiton.value, 0),
+          child: child,
+    );
+      },
     );
   }
 
   Widget _buildBackgroundImage() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height *
-              (isDetailInfoShowing ? 0.5 : 1.0),
-          foregroundDecoration:
-              BoxDecoration(color: Colors.black.withOpacity(0.3)),
-          child: CachedNetworkImage(
-            imageUrl: widget.placeModel.mainImage,
-            fit: BoxFit.cover,
+    return Hero(
+      tag: widget.placeModel.mainImage,
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height *
+                (isDetailInfoShowing ? 0.5 : 1.0),
+            foregroundDecoration:
+                BoxDecoration(color: Colors.black.withOpacity(0.3)),
+            child: CachedNetworkImage(
+              imageUrl: widget.placeModel.mainImage,
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
