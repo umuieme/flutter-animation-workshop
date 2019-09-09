@@ -1,6 +1,6 @@
 # flutter_workshop_animation
 
-A new Flutter project.
+This is repo contains the app developed during the flutter animation workshop organized by [Flutter Nepal](https://www.facebook.com/flutterNP/). The design was from [dribbble](https://dribbble.com/shots/6584486-Optimal-brigade-12). So do give a like and appreciate hard work of the designer.
 
 ## Getting Started
 
