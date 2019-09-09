@@ -169,35 +169,33 @@ class _MyHomePageState extends State<MyHomePage> {
   Iterable<Widget> _buildPages() {
     final List<Widget> pages = <Widget>[];
     for (int index = 0; index < placeList.length; index++) {
-      var resizeFactor =
-          (1 - (((selectedIndex.value - index).abs() * 0.2).clamp(0.0, 1.0)));
+      var resizeFactor = 1 - min((selectedIndex.value - index).abs(), 1) * .2;
       var opacity = 1 - min((selectedIndex.value - index).abs(), 1) * .6;
       pages.add(_buildPageItem(opacity, resizeFactor, placeList[index]));
     }
     return pages;
   }
 
-  Widget _buildPageItem(num opacity, num resizeFactor,PlaceModel location) {
+  Widget _buildPageItem(num opacity, num resizeFactor, PlaceModel location) {
     return Opacity(
-      opacity: opacity,
-      child: FractionallySizedBox(
-        heightFactor: resizeFactor,
-              child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-          decoration: BoxDecoration(
-            //color: Colors.red[400],
-            borderRadius: BorderRadius.circular(32.0),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: Color(0xff9ce4fb),
-                offset: Offset(0.0, 6.0),
-                blurRadius: 10.0,
-              ),
-            ],
+        opacity: opacity,
+        child: FractionallySizedBox(
+          heightFactor: resizeFactor,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+            decoration: BoxDecoration(
+              //color: Colors.red[400],
+              borderRadius: BorderRadius.circular(32.0),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Color(0xff9ce4fb),
+                  offset: Offset(0.0, 6.0),
+                  blurRadius: 10.0,
+                ),
+              ],
+            ),
+            child: LocationCard(location),
           ),
-          child: LocationCard(location),
-        ),
-      ),
-    );
+        ));
   }
 }

@@ -26,7 +26,6 @@ class _PlaceDetailState extends State<PlaceDetail> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      fit: StackFit.expand,
       children: <Widget>[
         _buildBackgroundImage(),
         _buildBody(),
@@ -198,26 +197,20 @@ class _PlaceDetailState extends State<PlaceDetail> {
 
   Widget _buildBackgroundImage() {
     print("buildbackfournd ===== $isDetailInfoShowing");
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        AnimatedContainer(
-          duration: Duration(milliseconds: 800),
-          curve: Curves.easeInOut,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height *
-              (isDetailInfoShowing ? 0.5 : 1.0),
-          foregroundDecoration:
-              BoxDecoration(color: Colors.black.withOpacity(0.3)),
-          child: Hero(
-            tag: widget.placeModel.mainImage,
-            child: CachedNetworkImage(
-              imageUrl: widget.placeModel.mainImage,
-              fit: BoxFit.cover,
-            ),
-          ),
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 800),
+      curve: Curves.easeInOut,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height *
+          (isDetailInfoShowing ? 0.5 : 1.0),
+      foregroundDecoration: BoxDecoration(color: Colors.black.withOpacity(0.3)),
+      child: Hero(
+        tag: widget.placeModel.mainImage,
+        child: CachedNetworkImage(
+          imageUrl: widget.placeModel.mainImage,
+          fit: BoxFit.cover,
         ),
-      ],
+      ),
     );
   }
 }

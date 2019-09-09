@@ -32,7 +32,7 @@ class _PlaceDetailAnimatorState extends State<PlaceDetailAnimator>
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 }
